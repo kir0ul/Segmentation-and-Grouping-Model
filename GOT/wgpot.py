@@ -3,6 +3,7 @@ WGPOT
 Wasserstein Distance and Optimal Transport Map
 of Gaussian Processes
 """
+
 import numpy as np
 import scipy.io
 import scipy.linalg
@@ -13,8 +14,8 @@ import time
 def GP_W_barycenter(gp_list, lbda=None, err=None):
     # Notice: Initialization
 
-    m_gp = len(gp_list)     # Number of GPs
-    d_gp = gp_list[0][0].shape[0]   # Dimension of the Gaussians
+    m_gp = len(gp_list)  # Number of GPs
+    d_gp = gp_list[0][0].shape[0]  # Dimension of the Gaussians
 
     means_array = np.zeros((d_gp, m_gp))
     cov_mats = np.zeros((d_gp, d_gp, m_gp))
@@ -32,7 +33,7 @@ def GP_W_barycenter(gp_list, lbda=None, err=None):
         err = 1e-6
     # Notice if weights are not specified, uniform wrights are chosen
     if lbda is None:
-        lbda = (1.0/m_gp) * np.ones((1, m_gp))
+        lbda = (1.0 / m_gp) * np.ones((1, m_gp))
         # lbda = (0.0141) * np.ones((1, m_gp))
 
     # Notice: Iteration
@@ -46,16 +47,18 @@ def GP_W_barycenter(gp_list, lbda=None, err=None):
     while wd > err and count < uplimit:
         K = K_next
         K_next = F_map(K, cov_mats, lbda)
-        #print("K_next: ", K_next)
+        # print("K_next: ", K_next)
         count = count + 1
-        print('count =', count)
+        print("count =", count)
         wd = Wasserstein_GP((np.zeros((d_gp, 1)), K), (np.zeros((d_gp, 1)), K_next))
-        print(' W-d in this iteration =', wd)
+        print(" W-d in this iteration =", wd)
 
     if count == uplimit:
-        print('Barycenter did not converge')
+        print("Barycenter did not converge")
 
-    mu_mean = np.sum(np.multiply(np.tile(lbda, (d_gp, 1)), means_array), axis=1, keepdims=1)
+    mu_mean = np.sum(
+        np.multiply(np.tile(lbda, (d_gp, 1)), means_array), axis=1, keepdims=1
+    )
 
     return mu_mean, K_next
 
@@ -68,14 +71,15 @@ def Wasserstein_GP(gp_0, gp_1):
 
     mu_1 = gp_1[0]
     K_1 = gp_1[1]
-    
 
     sqrtK_0 = scipy.linalg.sqrtm(K_0)
     first_term = np.dot(sqrtK_0, K_1)
     K_0_K_1_K_0 = np.dot(first_term, sqrtK_0)
 
-    cov_dist = np.trace(K_0) + np.trace(K_1) - 2 * np.trace(scipy.linalg.sqrtm(K_0_K_1_K_0))
-    l2norm = (np.sum(np.square(abs(mu_0 - mu_1))))
+    cov_dist = (
+        np.trace(K_0) + np.trace(K_1) - 2 * np.trace(scipy.linalg.sqrtm(K_0_K_1_K_0))
+    )
+    l2norm = np.sum(np.square(abs(mu_0 - mu_1)))
     d = np.real(np.sqrt(l2norm + cov_dist))
 
     return d
@@ -108,19 +112,19 @@ def F_map(K, cov_mats, lbda):
 
 
 def logmap(mu_gp1, K_gp1, mu_gp2, K_gp2):
-    #*The logarithmic map from GD1 to GD2 on the Riemannian manifold
-    #* of GDs with the W metric, see "W geometry of Gaussian measure"
-    #* The logmap.m from [Anton NIPS 2017]
+    # *The logarithmic map from GD1 to GD2 on the Riemannian manifold
+    # * of GDs with the W metric, see "W geometry of Gaussian measure"
+    # * The logmap.m from [Anton NIPS 2017]
 
     v_mu = mu_gp1 - mu_gp2
     d_gp = mu_gp1.shape[0]
-    #* Here apply the transport map of Gaussian Process!
+    # * Here apply the transport map of Gaussian Process!
     #   Proposition 2 of
     #   "Procrustes Metrics on Covariance Operators and
     #   Optimal Transportation of Gaussian Processes"
 
     sqrtK2 = np.real(scipy.linalg.sqrtm(K_gp2))
-    sqrt_sK2_K1_sK2 = np.real(scipy.linalg.sqrtm(np.dot(np.dot(sqrtK2, K_gp1),sqrtK2)))
+    sqrt_sK2_K1_sK2 = np.real(scipy.linalg.sqrtm(np.dot(np.dot(sqrtK2, K_gp1), sqrtK2)))
     scd_part = np.linalg.solve(sqrt_sK2_K1_sK2, sqrtK2)
     T = np.dot(sqrtK2, scd_part) - np.eye(d_gp)
 

@@ -24,10 +24,10 @@ def Plot_GP(plt, X, mu, K, color, mean_alpha=1, var_alpha=0.5, label=None):
 
 
 # Notice: Read the data from original mat file
-def read_all_gps(mat_address='data/exampleData.mat'):
+def read_all_gps(mat_address="data/exampleData.mat"):
     mat = scipy.io.loadmat(mat_address)
-    days = mat['days']
-    vanavara_gps = mat['Vanavara_GPs']
+    days = mat["days"]
+    vanavara_gps = mat["Vanavara_GPs"]
     num_of_GP = vanavara_gps.shape[1]
 
     gp_list = []
