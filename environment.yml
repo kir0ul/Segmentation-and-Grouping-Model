@@ -1,4 +1,4 @@
-name: Dirichlet
+name: Prados
 channels:
   - defaults
 dependencies:
@@ -51,4 +51,4 @@ dependencies:
     - shapesimilarity==1.0.0
     - six==1.16.0
     - threadpoolctl==3.5.0
-prefix: /home/adrian/anaconda3/envs/Dirichlet
+# prefix: /home/adrian/anaconda3/envs/Dirichlet
