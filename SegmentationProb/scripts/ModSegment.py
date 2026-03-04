@@ -153,7 +153,7 @@ def detect_brutal_changes(data, change_threshold, segment_size, acceleration):
     - segments (list): A list of indices marking the start of each segment.
     """
     jerk_diff = np.abs(np.diff(data))
-    print("Jerk diff", jerk_diff)
+    # print("Jerk diff", jerk_diff)
     segments = []
     start_index = 0
     data_prev = acceleration[0]
@@ -402,7 +402,7 @@ def calc_prob_from_segments(
         segment_probabilities = calc_segment_prob(
             segment_list[1:], data_len, window_size, plot=True
         )
-        print("Segment probabilities", segment_probabilities)
+        # print("Segment probabilities", segment_probabilities)
         probabilities = probabilities * segment_probabilities
     probabilities = probabilities / np.sum(probabilities)
     if plot == True:
@@ -710,7 +710,8 @@ if __name__ == "__main__":
     all_segments = []
     all_demos = []
     segment_data = []
-    mode = 2 #* Mode of execution, it can be 2D or 3D
+    # mode = 2 #* Mode of execution, it can be 2D or 3D
+    mode = 3  # * Mode of execution, it can be 2D or 3D
 
     # ?Segmentation in 3D
     if mode == 3:

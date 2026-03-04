@@ -45,7 +45,7 @@ plt.ylabel("Position")
 
 
 # Notice: Compute the Wasserstein distance of two GPs
-gp_0 = gp_list[5]
+gp_0 = gp_list[2]
 gp_1 = gp_list[1]
 wd_gp = Wasserstein_GP(gp_0, gp_1)
 wd_gp2 = Wasserstein_GP(gp_1, gp_0)
@@ -59,7 +59,7 @@ plt.title("The populations of GPs in blue. The Wasserstein barycenter in red")
 plt.savefig("data/barycenter_result.png", bbox_inches="tight")
 
 # Notice: Obtain the optimal transport map between two GPs
-gp_0_mu, gp_0_K = gp_list[5]
+gp_0_mu, gp_0_K = gp_list[2]
 gp_0_mu = mu_bc
 gp_0_K = K_bc
 gp_1_mu, gp_1_K = gp_list[1]
