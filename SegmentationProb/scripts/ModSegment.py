@@ -375,7 +375,7 @@ def calc_segment_prob(segment_list, data_len, window_size, plot=True):
     probabilities = probabilities / np.sum(probabilities)
     if plot:
         fig = plt.figure(figsize=(7, 6))
-        plt.title("Segment " + str(segment_list) + " Probabilities")
+        # plt.title("Segment " + str(segment_list) + " Probabilities")
         plt.plot(probabilities, lw=5)
         plt.xlabel("Time")
         plt.ylabel("Keypoint Probability")
@@ -463,8 +463,8 @@ def probabilistically_combine(
     final_keys = []
     cur_key = 0
     cur_key_group = []
-    window_size = 290
-    n_pass = 2
+    # window_size = 290
+    # n_pass = 2
     for i in range(len(sorted_keys)):
         if sorted_keys[i] <= cur_key + window_size:
             cur_key_group.append(sorted_keys[i])
